@@ -22,6 +22,7 @@
     <a href="#proposta">Proposta</a>
     <a href="#evolucao">Evolução</a>
     <a href="#resultados">Resultados</a>
+    <a href="#ias">IAs</a>
     <a href="#proximos">Próximos passos</a>
   </nav>
 </header>
@@ -185,7 +186,7 @@
       <div class="fact"><b>4 de 16</b><span>quedas do teste não tinham nenhuma leitura de Rx nas 24 h antes: nada a detectar.</span></div>
       <div class="fact"><b>42% × 5%</b><span>o mergulho dentro da hora (mínimo 3 dB abaixo da média) aparece antes de 42% das quedas e em 5% das horas normais: o melhor precursor.</span></div>
       <div class="fact"><b>18%</b><span>só 18% das quedas tiveram degradação lenta (2 dB abaixo do habitual), que é o que as técnicas clássicas procuram.</span></div>
-      <div class="fact"><b>~1,5/dia</b><span>quedas isoladas por dia entre ~720 ONUs. Com 5 falsos por dia, a precisão já fica abaixo de 20%.</span></div>
+      <div class="fact"><b>~1,7/dia</b><span>quedas isoladas por dia entre ~720 ONUs. Com 5 falsos por dia, a precisão já fica abaixo de 20%.</span></div>
     </div>
   </article>
 
@@ -230,9 +231,51 @@
   </article>
 </section>
 
+<section id="ias">
+  <div class="sec-head"><span class="num">5.7</span><h2>O que três IAs sugeriram, e o que aconteceu</h2></div>
+  <p class="prose wide">A tabela de resultados e o diagnóstico dos falsos foram enviados ao <b>ChatGPT</b>, ao <b>Gemini</b> e
+    ao <b>DeepSeek</b>, com a mesma pergunta para cada técnica: por que ela gera tantos falsos e como reduzi-los. As
+    sugestões concretas foram implementadas e medidas no mesmo teste.</p>
+
+  <div class="table-wrap"><table class="ia-table">
+    <thead><tr><th>Técnica</th><th>ChatGPT</th><th>Gemini</th><th>DeepSeek</th></tr></thead>
+    <tbody>
+      <tr><td class="tecnica">Regra -27 dBm</td><td>Avisar na transição (cruzou -27) ou na piora; Rx crônico vai para a fila de manutenção</td><td>Limiar relativo ao nível da própria ONU</td><td>Histerese: mínimo abaixo de -27 em 2 de 3 horas, sem evento em massa na PON</td></tr>
+      <tr><td class="tecnica">Ingênuo</td><td>Recência com decaimento; separar reincidência de primeira queda</td><td>Ignorar falta de energia; quarentena após religar</td><td>Mascarar eventos em massa</td></tr>
+      <tr><td class="tecnica">Z-score</td><td>Mediana/MAD com piso de escala; só piora com magnitude mínima em dB</td><td>Persistência de 3 horas</td><td>Persistência (horas seguidas)</td></tr>
+      <tr><td class="tecnica">Sazonal</td><td>Baixa prioridade: poucos ciclos para estimar</td><td>Suavizar o resíduo; filtro por PON</td><td>—</td></tr>
+      <tr><td class="tecnica">CUSUM</td><td>Unilateral, reiniciar em lacunas, exigir confirmação pelo mergulho</td><td>Aumentar a tolerância k; combinar com o mergulho</td><td>—</td></tr>
+      <tr><td class="tecnica">Isolation Forest</td><td>Treinar só com operação estável; usar como ranking, não alarme</td><td>Atributos com tendência; excluir pós-religamento</td><td>—</td></tr>
+      <tr><td class="tecnica">Random Forest</td><td>Regularizar, pesar por evento/ONU, negativos difíceis</td><td>Pesos para o desbalanceamento; passar para o ranking semanal</td><td>Pesos por classe; avaliar por PR-AUC</td></tr>
+      <tr class="group"><td class="tecnica">Em comum</td><td colspan="3">Atributos de mergulho dentro da hora e de piora do nível habitual; gradient boosting e regressão logística regularizada; a lista por ONU/semana para manutenção; medir falsos por dia com um teto fixo.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="cols ia-cols">
+    <div>
+      <h3 class="small-h">As sugestões, medidas no teste (7 dias, 16 quedas)</h3>
+      <div class="table-wrap"><table id="tab-ias"></table></div>
+      <p class="note">A regra por transição do ChatGPT, com aviso único por dia, foi a melhor hora a hora até aqui:
+        <b>4 de 12 quedas, F1 0,07</b> (antes, 0,05). As outras cortaram os falsos, mas perderam as quedas junto.
+        Confirma, por outro caminho, o limite do sinal horário.</p>
+    </div>
+    <div class="audit">
+      <h3 class="small-h">As IAs também auditaram, e erraram</h3>
+      <p><b>ChatGPT achou um erro real:</b> 99 avisos ÷ 6,9 falsos/dia daria 14 dias, mas o teste tem 7 com dados.
+        Os falsos/dia da rodada de 17/nov contavam a semana sem coleta. <b>Corrigido</b>: os valores dobraram.</p>
+      <p>Também pediu para conferir se o mergulho não seria a própria queda vista antes (vazamento). Conferido: em 50
+        das 54 quedas, a hora anterior estava no ar a hora inteira.</p>
+      <p><b>DeepSeek leu errado a tabela</b> (63 avisos em vez de 630) e calculou um F1 de 0,18 que não existe.
+        <b>Gemini definiu o mergulho como máximo − mínimo</b>, e não média − mínimo. Toda resposta foi conferida antes de usar.</p>
+    </div>
+  </div>
+</section>
+
 <section id="proximos">
   <div class="sec-head"><span class="num">06</span><h2>Próximos passos</h2></div>
   <ul class="next">
+    <li><b>Congelar e validar no futuro.</b> Como sugeriu o ChatGPT: o teste atual já orientou ajustes, então vira
+      desenvolvimento. As escolhas ficam congeladas e são confirmadas nas próximas semanas, sem mexer.</li>
     <li><b>Mais semanas de dados.</b> O sistema agora guarda o sinal hora a hora sem prazo. Cada semana nova vira mais uma
       lista avaliada, até a diferença entre técnicas sair do ruído.</li>
     <li><b>Validação em campo.</b> Um "falso" pode ser um problema real que ainda não derrubou o cliente. A lista semanal

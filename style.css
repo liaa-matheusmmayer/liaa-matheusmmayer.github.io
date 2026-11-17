@@ -267,3 +267,11 @@ footer p { margin: 4px 0; }
 }
 .stats-test { margin-top: 16px; }
 .stats-test .fact b { font-size: 30px; }
+.ia-table td { white-space: normal; vertical-align: top; min-width: 170px; font-size: 13px; color: var(--ink-2); line-height: 1.45; }
+.ia-table td.tecnica { color: var(--ink); min-width: 120px; }
+.ia-cols { margin-top: 28px; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
+.small-h { font: 400 24px/1.2 var(--serif); margin: 0 0 12px; }
+.audit { border: 1px solid var(--line); background: var(--bg); padding: 18px; border-radius: 4px; }
+.audit p { font-size: 14px; color: var(--ink-2); margin: 0 0 12px; }
+.audit p:last-child { margin-bottom: 0; }
+@media (max-width: 920px) { .ia-cols { grid-template-columns: 1fr; } }

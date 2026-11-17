@@ -172,7 +172,7 @@
         <td class="n">${fmt(r.f1)}</td><td class="n">${hours(r.lead)}</td></tr>`).join("")}</tbody>`;
     document.getElementById("nota-horaria").innerHTML = key === "primeiro"
       ? "7 dias de sinal (o que o Zabbix guardava), treino nos 3 primeiros. 24 quedas no teste. Isolation Forest com o melhor F1 (0,30), mas ainda 9 falsos por dia."
-      : "Com 3 semanas (treino 27/10–03/11, teste 09–17/11), os resultados <b>pioraram</b>: 12 quedas avaliáveis no teste, de ONUs diferentes das do treino, e duas quedas de energia em massa que geraram centenas de alertas. O F1 de todas fica entre 0,00 e 0,05.";
+      : "Com 3 semanas (treino 27/10–03/11, teste 09–17/11, 7 dias com dados), os resultados <b>pioraram</b>: 12 quedas avaliáveis no teste (16 no total, 4 sem leitura de Rx antes), de ONUs diferentes das do treino, e duas quedas de energia em massa que geraram centenas de alertas. O F1 de todas fica entre 0,00 e 0,05. Falsos/dia corrigidos em 17/nov: antes contavam também a semana sem coleta.";
   }
   function showRodada(key) {
     const rows = rodada(key);
@@ -229,6 +229,14 @@
     drawBars(Number(b.dataset.k));
   }));
   drawBars(10);
+
+  /* ---------------- 5.7 sugestões das IAs */
+  const bestIa = Math.max(...D.sugestoes.map((r) => r.f1));
+  document.getElementById("tab-ias").innerHTML = `
+    <thead><tr><th>Sugestão</th><th>Aviso único</th><th class="n">Quedas</th><th class="n">Falsos/dia</th><th class="n">F1</th></tr></thead>
+    <tbody>${D.sugestoes.map((r) => `<tr class="${r.f1 === bestIa ? "best" : ""}"><td class="tecnica">${r.sugestao}</td>
+      <td>${r.aviso_unico_24h ? "sim" : "não"}</td><td class="n">${r.quedas_avisadas}/${r.quedas_com_sinal}</td>
+      <td class="n">${fmt(r.falsos_por_dia, 1)}</td><td class="n">${fmt(r.f1)}</td></tr>`).join("")}</tbody>`;
 
   /* ---------------- entrada ao rolar */
   document.querySelectorAll(".result, .timeline li, .rule, .fact, .next li, .sec-head").forEach((n) => n.classList.add("reveal"));
