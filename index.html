@@ -200,8 +200,12 @@
     </div>
     <div class="chart" id="bars"></div>
     <p class="note">Melhor resultado: <b>3 das 13 ONUs que caíram estavam entre as 10 da lista</b> (precisão de 30%,
-      22 vezes o acaso), tanto na combinação de sinais sem treino quanto na regressão logística. Com 13 quedas, a
-      diferença entre as técnicas do topo ainda está dentro do ruído: o arquivo do sinal está acumulando novas semanas.</p>
+      22 vezes o acaso), tanto na combinação de sinais sem treino quanto na regressão logística.</p>
+    <div class="facts stats-test">
+      <div class="fact"><b>0,02%</b><span>chance de uma lista sorteada de 10 acertar 3 quedas (distribuição hipergeométrica). O resultado não é sorte.</span></div>
+      <div class="fact"><b>7% – 65%</b><span>intervalo de confiança de 95% da precisão da lista de 10 (3 de 10). Com uma semana, a incerteza é grande.</span></div>
+      <div class="fact"><b>3 × 2</b><span>combinação contra Isolation Forest: os intervalos se sobrepõem. Ainda não dá para dizer qual técnica é melhor; o arquivo do sinal está acumulando novas semanas.</span></div>
+    </div>
   </article>
 
   <article class="result">
@@ -212,6 +216,10 @@
           cliente. Ele respondeu "acionar" ou "não acionar" e explicou o tipo de problema.</p>
         <p>Com o <b>Gemini 3.5 Flash Lite</b>: dos 48 alertas, 11 eram reais. Acionou 23 (30% reais contra 23% sem filtro),
           cortou <b>57% dos falsos</b> e manteve <b>7 das 11</b> quedas. O Gemini 3.8 Flash ficou indisponível (sobrecarga).</p>
+        <p><b>Na lista semanal (17/nov):</b> o modelo recebeu as 30 ONUs de maior risco, embaralhadas e sem a pontuação, e
+          escolheu 10. Em <b>3 rodadas com ordens diferentes, acertou 3 quedas todas as vezes</b>: empatou com a combinação de
+          sinais e ficou bem acima de uma escolha ao acaso entre as 30 (1,3). Critério que declarou: LINK LOSS recente,
+          Rx abaixo de -27 dBm e microcortes, descartando falta de energia.</p>
       </div>
       <div class="llm">
         <div class="llm-row"><span>sem filtro</span><div class="llm-bar"><i style="--w:23%"></i></div><b>23%</b></div>

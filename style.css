@@ -265,3 +265,5 @@ footer p { margin: 4px 0; }
   .rules, .facts { grid-template-columns: 1fr; }
   th, td { padding: 8px 9px; }
 }
+.stats-test { margin-top: 16px; }
+.stats-test .fact b { font-size: 30px; }
