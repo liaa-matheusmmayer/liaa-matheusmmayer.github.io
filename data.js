@@ -1511,6 +1511,308 @@ window.DADOS = {
    "antecedencia_mediana_h": null
   }
  ],
+ "commits": [
+  {
+   "data": "2026-10-17",
+   "msg": "ISP AI Monitor v0.6: integração Zabbix/SGP, áreas da rede, incidentes e visão geral",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-17",
+   "msg": "Anomalias: Rx de ONU, rádio e latência comparados com a referência de 7 dias",
+   "tipo": "ia"
+  },
+  {
+   "data": "2026-10-17",
+   "msg": "Worker repete tarefa que falhou em 15 min; erro do SGP mostra o motivo",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-17",
+   "msg": "Integrações em caixas por fonte, Visão geral com últimos incidentes, equipamento na tela da OLT",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-17",
+   "msg": "Topologia montada no sistema: origem provável e impacto dos incidentes",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-17",
+   "msg": "Mapa da rede editável (estilo Dude) na Topologia",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-17",
+   "msg": "Topologia sem destinos externos (sites): só equipamentos da rede",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-18",
+   "msg": "POPs cadastrados no sistema: situação por POP, incidentes por POP e caixas no mapa",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-18",
+   "msg": "Acesso só da rede interna e guia para Windows Server",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-18",
+   "msg": "Guia de instalação no Proxmox (VM Linux, firewall com IPSet, backup)",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-18",
+   "msg": "Login: usuários, sessão por cookie, bloqueio por tentativas, tela de usuários",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-19",
+   "msg": "Login: comando reset-password, log das tentativas recusadas e aviso de qual usuário usar",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-19",
+   "msg": "Redesign: ícones (lucide-react), menu e topo novos, títulos e painéis com ícone, nova tela de login",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-19",
+   "msg": "Remove textos informativos: subtítulos descritivos, rodapés e notas explicativas",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-19",
+   "msg": "Configurações (usuários, integrações, parâmetros), logos dos fabricantes, Fibra e Rádio redesenhados, menu recolhível",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-19",
+   "msg": "Rádio: CCQ e airMAX ocultos no AirOS 8 (AC), métricas de AirOS 8 reconhecidas, taxa x capacidade",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-19",
+   "msg": "Rádio: template Zabbix (AirOS 8) para importar e airtime TX/RX separado",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-19",
+   "msg": "Gráficos: resumo (atual/mín/média/máx/variação), escala justa, média, mín/máx marcados, picos em vermelho, zoom",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-19",
+   "msg": "Estudo da rede: recomendações por regras para rádios e POPs (7 dias de trends)",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-19",
+   "msg": "Gerador de hosts do Zabbix a partir de planilha de rádios (painéis e enlaces)",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-19",
+   "msg": "Painéis: clientes conectados por estação, regras de painel no estudo e template com dados por cliente",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-19",
+   "msg": "Painel: clientes airMAX M/AC pela resposta de CINR, contagem no resumo e aviso de troca no estudo",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-19",
+   "msg": "Clientes do painel: IP 0.0.0.0 (bridge) exibido como sem IP",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-19",
+   "msg": "Clientes M: IP 0.0.0.0 é limitação de firmware antigo (não bridge); dica na tabela e nota na doc",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-19",
+   "msg": "Ignora arquivos de importação gerados por POP (deploy/zabbix/importar/)",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-20",
+   "msg": "Clientes do SGP nos rádios e direção dos painéis",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-20",
+   "msg": "Mapa real da rede, direção e abertura dos painéis estimadas pelos clientes e pelo modelo",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-20",
+   "msg": "Abertura do LiteAP GPS (90°) na tabela de modelos",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-20",
+   "msg": "Configurações: remove o grupo Integrações da aba Parâmetros (já está na aba Integrações)",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-20",
+   "msg": "Mapa: POP com ícone de torre (vermelho com equipamento fora)",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-20",
+   "msg": "Mapa: ícone da torre sem fundo, com sombra, base no ponto do POP",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-20",
+   "msg": "Topologia: excluir equipamento (mapa e ligações) e painel de detalhes visível",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-10-20",
+   "msg": "Análise por modelo de linguagem (API do Claude): relatório diário, incidentes, POPs, painéis e perguntas",
+   "tipo": "ia"
+  },
+  {
+   "data": "2026-10-20",
+   "msg": "IA: fallbacks só em modelos que aceitam (permite AI_MODEL=claude-haiku-5-5)",
+   "tipo": "ia"
+  },
+  {
+   "data": "2026-10-20",
+   "msg": "Diagnóstico de incidentes: rótulos do operador, baseline por regras e causa estruturada da IA",
+   "tipo": "ia"
+  },
+  {
+   "data": "2026-10-27",
+   "msg": "Experimento de diagnóstico: regras x modelos de linguagem, com opção local gratuita (Ollama)",
+   "tipo": "ia"
+  },
+  {
+   "data": "2026-10-27",
+   "msg": "Slides da atividade 4 (IA Aplicada): PPTX e PDF",
+   "tipo": "ia"
+  },
+  {
+   "data": "2026-10-27",
+   "msg": "Provedores de IA: Gemini gratuito e Ollama local além da API do Claude",
+   "tipo": "ia"
+  },
+  {
+   "data": "2026-10-27",
+   "msg": "Dispositivos: desativar só no sistema e respeitar hosts desativados no Zabbix",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-11-03",
+   "msg": "Experimento de detecção de anomalias no sinal das ONUs",
+   "tipo": "ia"
+  },
+  {
+   "data": "2026-11-15",
+   "msg": "Experimento de anomalias: rádios, Random Forest com histórico e triagem por LLM",
+   "tipo": "ia"
+  },
+  {
+   "data": "2026-11-15",
+   "msg": "Interface no celular: menu em gaveta e topo compacto",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-11-15",
+   "msg": "Clientes em risco: Isolation Forest no Rx das ONUs, conferido com as quedas reais",
+   "tipo": "ia"
+  },
+  {
+   "data": "2026-11-15",
+   "msg": "Template Zabbix para rádios airMAX M (AirOS 6)",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-11-15",
+   "msg": "Topologia: organizar o mapa por POP e exportar a documentação da rede",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-11-15",
+   "msg": "Abertura das antenas: padrões da rede e abertura/azimute na documentação",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-11-15",
+   "msg": "Mapa da rede: ligações entre as torres, coordenadas suspeitas e visual mais limpo",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-11-15",
+   "msg": "Mapa da rede: limite de 10 km, botões de camadas e login estável ao reiniciar o backend",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-11-15",
+   "msg": "Mapa da rede: filtro por POP e por painel",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-11-15",
+   "msg": "Mapa da rede: novo visual com painel do POP, estado das torres e tela cheia",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-11-15",
+   "msg": "SSID dos rádios e zoom estável no Mapa da rede",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-11-15",
+   "msg": "Histórico do sinal, avisos por Telegram, mudanças nos rádios e busca de clientes (backend)",
+   "tipo": "ia"
+  },
+  {
+   "data": "2026-11-15",
+   "msg": "Menu reorganizado, ficha do cliente, busca global e tela de avisos (frontend)",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-11-15",
+   "msg": "Ficha do cliente completa, nomes nos clientes em risco e padrão de filtros",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-11-15",
+   "msg": "Animações com Motion no frontend",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-11-16",
+   "msg": "Cabeçalho padrão em todas as listas, Visão geral reorganizada e filtros em Rádio e Fibra",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-11-17",
+   "msg": "Padrão visual nas telas que faltavam",
+   "tipo": "sistema"
+  },
+  {
+   "data": "2026-11-17",
+   "msg": "Arquivo horário do sinal das ONUs e rádios",
+   "tipo": "ia"
+  },
+  {
+   "data": "2026-11-17",
+   "msg": "Diagnóstico dos falsos positivos, lista semanal de risco e site do projeto",
+   "tipo": "ia"
+  },
+  {
+   "data": "2026-11-17",
+   "msg": "Auditoria das IAs: falsos/dia corrigidos, sugestões testadas e margem de erro da lista semanal",
+   "tipo": "ia"
+  }
+ ],
  "sugestoes": [
   {
    "sugestao": "Histerese + supressão de massa (DeepSeek)",

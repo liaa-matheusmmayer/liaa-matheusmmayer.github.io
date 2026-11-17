@@ -238,6 +238,53 @@
       <td>${r.aviso_unico_24h ? "sim" : "não"}</td><td class="n">${r.quedas_avisadas}/${r.quedas_com_sinal}</td>
       <td class="n">${fmt(r.falsos_por_dia, 1)}</td><td class="n">${fmt(r.f1)}</td></tr>`).join("")}</tbody>`;
 
+  /* ---------------- diário do código */
+  (() => {
+    const commits = D.commits || [];
+    if (!commits.length) return;
+    const day = (d) => new Date(`${d}T12:00:00`);
+    const first = day(commits[0].data), last = day(commits[commits.length - 1].data);
+    const days = Math.round((last - first) / 86400000) + 1;
+    const by = {};
+    for (const c of commits) {
+      by[c.data] ??= { ia: 0, sistema: 0 };
+      by[c.data][c.tipo] += 1;
+    }
+    const W = 900, H = 220, m = { l: 34, r: 10, t: 14, b: 40 };
+    const bw = (W - m.l - m.r) / days;
+    const max = Math.max(...Object.values(by).map((v) => v.ia + v.sistema));
+    const y = (v) => m.t + (1 - v / max) * (H - m.t - m.b);
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": `Commits por dia, de ${commits[0].data} a ${commits[commits.length - 1].data}` }, document.getElementById("commit-chart"));
+    for (const t of [0, 5, 10, 15].filter((t) => t <= max)) {
+      el("line", { class: "gl", x1: m.l, x2: W - m.r, y1: y(t), y2: y(t) }, svg);
+      el("text", { class: "lbl", x: m.l - 8, y: y(t) + 4, "text-anchor": "end" }, svg).textContent = t;
+    }
+    for (let i = 0; i < days; i++) {
+      const d = new Date(first.getTime() + i * 86400000);
+      const key = d.toISOString().slice(0, 10);
+      const v = by[key];
+      const x = m.l + i * bw + 1;
+      if (v) {
+        const sys = el("rect", { x, y: y(v.sistema), width: bw - 2, height: H - m.b - y(v.sistema), fill: "var(--line-2)" }, svg);
+        el("title", {}, sys).textContent = `${key}: ${v.sistema} do sistema, ${v.ia} de IA e experimentos`;
+        if (v.ia) el("rect", { x, y: y(v.sistema + v.ia), width: bw - 2, height: y(v.sistema) - y(v.sistema + v.ia), fill: "var(--amber)" }, svg);
+      }
+      if (i % 7 === 0 || i === days - 1) {
+        el("text", { class: "lbl", x: x + bw / 2, y: H - m.b + 20, "text-anchor": "middle" }, svg).textContent = `${d.getDate()}/${d.getMonth() + 1}`;
+      }
+    }
+    const list = document.getElementById("commit-list");
+    const more = document.getElementById("commit-more");
+    const recent = [...commits].reverse();
+    const fmtDay = (d) => d.slice(8, 10) + "/" + d.slice(5, 7);
+    const render = (all) => {
+      list.innerHTML = (all ? recent : recent.slice(0, 10)).map((c) => `<li class="${c.tipo}"><time>${fmtDay(c.data)}</time><span class="tag-${c.tipo}">${c.tipo === "ia" ? "IA e experimentos" : "Sistema"}</span><p>${c.msg.replace(/</g, "&lt;")}</p></li>`).join("");
+      more.textContent = all ? "mostrar só os 10 mais recentes" : `ver todos os ${commits.length} commits`;
+      more.onclick = () => render(!all);
+    };
+    render(false);
+  })();
+
   /* ---------------- entrada ao rolar */
   document.querySelectorAll(".result, .timeline li, .rule, .fact, .next li, .sec-head").forEach((n) => n.classList.add("reveal"));
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: 0.12 });

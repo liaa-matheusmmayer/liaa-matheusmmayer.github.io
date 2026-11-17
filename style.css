@@ -277,3 +277,20 @@ footer p { margin: 4px 0; }
 @media (max-width: 920px) { .ia-cols { grid-template-columns: 1fr; } }
 .video-wrap { border: 1px solid var(--line-2); border-radius: 6px; overflow: hidden; background: #0a0d11; box-shadow: 0 30px 80px -30px rgba(0,0,0,.8); }
 .video-wrap video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #0a0d11; }
+#commit-chart svg { min-width: 560px; }
+#commit-chart { overflow-x: auto; }
+.commits { list-style: none; padding: 0; margin: 0; display: grid; gap: 0; border: 1px solid var(--line); border-radius: 4px; background: var(--bg); }
+.commits li { display: grid; grid-template-columns: 64px 170px 1fr; align-items: baseline; gap: 14px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.commits li:last-child { border-bottom: 0; }
+.commits time { font: 500 13px var(--mono); color: var(--ink-3); }
+.commits p { margin: 0; font-size: 14.5px; color: var(--ink-2); }
+.commits li.ia p { color: var(--ink); }
+.tag-ia, .tag-sistema { font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+.tag-ia { color: var(--amber); }
+.tag-sistema { color: var(--ink-3); }
+.more { margin-top: 12px; font: 500 13px var(--mono); color: var(--amber); background: none; border: 1px solid var(--line-2); border-radius: 999px; padding: 7px 16px; cursor: pointer; }
+.more:hover { border-color: var(--amber); }
+@media (max-width: 560px) {
+  .commits li { grid-template-columns: 52px 1fr; }
+  .commits li p { grid-column: 1 / -1; }
+}
