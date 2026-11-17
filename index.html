@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Antes da queda — IA Aplicada</title>
+<meta name="description" content="Detecção antecipada de quedas de clientes de fibra óptica num provedor regional: técnicas de IA comparadas com as quedas reais. Projeto de IA Aplicada, UNIPAMPA, 2026/2.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2311151b'/%3E%3Cpath d='M4 18h7l3-8 4 14 3-6h7' fill='none' stroke='%23f5a524' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="top">
+  <a class="brand" href="#inicio"><span class="dot"></span>antes da queda</a>
+  <nav>
+    <a href="#contexto">Contexto</a>
+    <a href="#problema">Problema</a>
+    <a href="#proposta">Proposta</a>
+    <a href="#evolucao">Evolução</a>
+    <a href="#resultados">Resultados</a>
+    <a href="#proximos">Próximos passos</a>
+  </nav>
+</header>
+
+<main>
+<section id="inicio" class="hero">
+  <div class="hero-text">
+    <p class="kicker">IA Aplicada · UNIPAMPA · 2026/2 · Matheus Mayer</p>
+    <h1>Dá para saber <em>antes</em> que o cliente de fibra vai cair?</h1>
+    <p class="lede">Um provedor regional mede, hora a hora, a potência da luz que chega a cada cliente. Este projeto testa
+      se técnicas de IA conseguem avisar o técnico <strong>antes</strong> da queda, com poucos alarmes falsos, usando as
+      próprias quedas registradas como gabarito.</p>
+    <dl class="stats">
+      <div><dt>clientes de fibra (ONUs)</dt><dd data-count="955">955</dd></div>
+      <div><dt>horas de sinal guardadas</dt><dd data-count="231534">231.534</dd></div>
+      <div><dt>quedas LINK LOSS isoladas</dt><dd data-count="54">54</dd></div>
+      <div><dt>técnicas comparadas</dt><dd data-count="12">12</dd></div>
+    </dl>
+  </div>
+  <figure class="scope">
+    <div class="scope-head">
+      <span class="scope-title">Rx da ONU (dBm), horas antes da queda</span>
+      <div class="seg" role="tablist" aria-label="Exemplo de sinal">
+        <button role="tab" aria-selected="true" data-sinal="0">com microcortes</button>
+        <button role="tab" aria-selected="false" data-sinal="1">súbita</button>
+      </div>
+    </div>
+    <svg id="scope" viewBox="0 0 640 300" role="img" aria-label="Sinal óptico de uma ONU antes de cair"></svg>
+    <figcaption id="scope-cap"></figcaption>
+  </figure>
+</section>
+
+<section id="contexto" class="band">
+  <div class="sec-head"><span class="num">01</span><h2>Contexto</h2></div>
+  <div class="cols">
+    <div class="prose">
+      <p>Num provedor de internet por fibra (GPON), cada cliente tem uma <strong>ONU</strong>: o aparelho que recebe a luz
+        vinda da <strong>OLT</strong> da central, passando por divisores ópticos. Uma mesma porta da OLT (a <strong>PON</strong>)
+        atende dezenas de clientes.</p>
+      <p>O monitoramento (Zabbix) guarda, para cada ONU, a <strong>potência óptica recebida (Rx)</strong> e o
+        <strong>estado</strong>: no ar, <span class="tag red">LINK LOSS</span> (sem luz: fibra rompida, conector, curvatura)
+        ou <span class="tag amber">DYING GASP</span> (o aparelho avisou que ficou sem energia).</p>
+      <p>Hoje o provedor só descobre a queda quando ela acontece, ou quando o cliente liga. A única regra preventiva é
+        olhar quem está com Rx abaixo de <span class="mono">-27 dBm</span>.</p>
+    </div>
+    <ol class="chain" aria-label="Caminho da luz">
+      <li><b>OLT</b><span>central, 13 portas PON</span></li>
+      <li><b>Divisores</b><span>a luz é dividida no caminho</span></li>
+      <li><b>ONU</b><span>955 clientes, Rx de -15 a -30 dBm</span></li>
+      <li><b>Zabbix</b><span>média, mínimo e máximo por hora</span></li>
+      <li><b>ISP AI Monitor</b><span>sistema próprio que guarda o histórico e roda os experimentos</span></li>
+    </ol>
+  </div>
+</section>
+
+<section id="problema">
+  <div class="sec-head"><span class="num">02</span><h2>O problema</h2></div>
+  <div class="cols">
+    <div class="prose">
+      <p class="big">Avisar <em>antes</em> que uma ONU caia por LINK LOSS, com o menor número possível de alarmes falsos.</p>
+      <p>Um alarme falso custa: o técnico vai a campo ou liga para um cliente que não teria problema. Por isso, avisar
+        muitas quedas não basta: o equilíbrio entre quedas avisadas e falsos é o que importa (F1).</p>
+    </div>
+    <div class="rules">
+      <div class="rule"><span class="rk">gabarito</span><p>As quedas registradas pelo próprio Zabbix. Nada é rotulado à mão.</p></div>
+      <div class="rule"><span class="rk">acerto</span><p>Alerta seguido de LINK LOSS da mesma ONU em até <b>24 h</b>.</p></div>
+      <div class="rule"><span class="rk">falso</span><p>Alerta sem queda nas 24 h seguintes.</p></div>
+      <div class="rule"><span class="rk">antecedência</span><p>Horas entre o primeiro alerta e a queda.</p></div>
+      <div class="rule"><span class="rk">sem trapaça</span><p>Treino nos primeiros dias, teste nos seguintes. Em cada hora, só se usa o que já tinha acontecido.</p></div>
+      <div class="rule"><span class="rk">controle</span><p>Queda em massa na PON e DYING GASP (energia) ficam fora do alvo: o sinal de uma ONU não tem como prevê-las.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="proposta" class="band">
+  <div class="sec-head"><span class="num">03</span><h2>Proposta</h2></div>
+  <p class="prose wide">Comparar, com os mesmos dados e as mesmas regras de acerto, técnicas que vão da regra atual a
+    aprendizado de máquina, e usar modelos de linguagem para filtrar e explicar os alertas.</p>
+  <div class="techs" id="techs"></div>
+</section>
+
+<section id="evolucao">
+  <div class="sec-head"><span class="num">04</span><h2>Evolução no semestre</h2></div>
+  <ol class="timeline">
+    <li>
+      <time>set – 20/out</time>
+      <h3>Proposta, investigação e plano</h3>
+      <p>Primeira ideia: classificar a <b>causa</b> de cada incidente da rede (energia, fibra, rádio...) e comparar regras
+        com modelos de linguagem. Construção do sistema que coleta os dados do Zabbix e do sistema de gestão.</p>
+    </li>
+    <li>
+      <time>20/out</time>
+      <h3>Mudança de foco</h3>
+      <p>Por orientação do professor: usar IA para <b>detectar antes</b>, com números, e não mostrar telas. Alvo: o
+        sinal óptico das ~700 ONUs, validado com as quedas reais.</p>
+    </li>
+    <li>
+      <time>03/nov</time>
+      <h3>Primeiro experimento: 8 técnicas</h3>
+      <p>7 dias de Rx horário (o que o Zabbix guarda), 24 quedas no teste. O Isolation Forest teve o melhor equilíbrio
+        (F1 0,30). O Gemini, lendo cada alerta, cortou 57% dos falsos e manteve 7 de 11 quedas.</p>
+    </li>
+    <li>
+      <time>12/nov</time>
+      <h3>Apresentação e crítica</h3>
+      <p>"F1 catastrófico em todas as técnicas." Pedidos: números totais por técnica, entender por que cada uma erra,
+        melhorar os dados, testar outros modelos e publicar este site.</p>
+    </li>
+    <li class="now">
+      <time>17/nov</time>
+      <h3>Mais dados, diagnóstico e nova pergunta</h3>
+      <p>O sistema passou a <b>guardar o sinal hora a hora sem prazo</b> (o Zabbix apaga após 7 dias): 3 semanas de dados.
+        Cada técnica foi questionada sobre a origem dos falsos, 4 correções foram medidas e a pergunta mudou para uma
+        <b>lista semanal de ONUs em risco</b>.</p>
+    </li>
+  </ol>
+</section>
+
+<section id="resultados" class="band">
+  <div class="sec-head"><span class="num">05</span><h2>Resultados</h2></div>
+
+  <article class="result">
+    <header><span class="rnum">5.1</span><h3>Hora a hora: quedas avisadas × alarmes falsos</h3></header>
+    <p class="prose">Cada ponto é uma técnica no período de teste, com o limiar escolhido no treino. O ideal é o canto
+      superior esquerdo: muitas quedas avisadas, poucos falsos por dia.</p>
+    <div class="toggle seg" role="tablist" aria-label="Rodada do experimento">
+      <button role="tab" aria-selected="true" data-rodada="primeiro">03/nov · 7 dias</button>
+      <button role="tab" aria-selected="false" data-rodada="segundo">17/nov · 3 semanas</button>
+    </div>
+    <div class="chart" id="scatter"></div>
+    <div class="table-wrap"><table id="tab-horaria"></table></div>
+    <p class="note" id="nota-horaria"></p>
+  </article>
+
+  <article class="result">
+    <header><span class="rnum">5.2</span><h3>De onde vêm os falsos de cada técnica</h3></header>
+    <p class="prose">Cada alarme falso do teste foi classificado pelas causas que se aplicam (um falso pode ter mais de
+      uma). A cor mostra a fração dos falsos da técnica com aquela causa.</p>
+    <div class="table-wrap"><table id="tab-diag" class="heat"></table></div>
+  </article>
+
+  <article class="result">
+    <header><span class="rnum">5.3</span><h3>Estratégias para reduzir os falsos, uma de cada vez</h3></header>
+    <p class="prose">Cada correção ataca uma causa do diagnóstico. Os limiares são escolhidos de novo no treino a cada
+      etapa.</p>
+    <ul class="fixes">
+      <li><b>E1 · sinal relativo</b> — Rx menos a mediana da PON na mesma hora (tira a variação comum) e, na regra, distância ao nível habitual da própria ONU em vez de -27 dBm fixo.</li>
+      <li><b>E2 · quarentena</b> — ignora as 6 h seguintes a qualquer queda da ONU (religou: o sinal ainda acomoda).</li>
+      <li><b>E3 · aviso único</b> — alertas da mesma ONU a menos de 24 h viram um só chamado.</li>
+    </ul>
+    <div class="table-wrap"><table id="tab-ablacao"></table></div>
+    <p class="note">Os avisos caem bastante (o limiar fixo vai de 555 para 79), mas as quedas avisadas caem junto. Nenhuma
+      combinação passou de F1 0,05 hora a hora.</p>
+  </article>
+
+  <article class="result">
+    <header><span class="rnum">5.4</span><h3>Por que hora a hora é tão difícil</h3></header>
+    <div class="facts">
+      <div class="fact"><b>83%</b><span>das quedas LINK LOSS duram 1 ou 2 horas: são piscadas, não rompimentos.</span></div>
+      <div class="fact"><b>4 ONUs</b><span>fizeram 28 das 38 quedas do treino. No teste, 16 quedas vieram de 14 ONUs, quase todas sem histórico.</span></div>
+      <div class="fact"><b>4 de 16</b><span>quedas do teste não tinham nenhuma leitura de Rx nas 24 h antes: nada a detectar.</span></div>
+      <div class="fact"><b>42% × 5%</b><span>o mergulho dentro da hora (mínimo 3 dB abaixo da média) aparece antes de 42% das quedas e em 5% das horas normais: o melhor precursor.</span></div>
+      <div class="fact"><b>18%</b><span>só 18% das quedas tiveram degradação lenta (2 dB abaixo do habitual), que é o que as técnicas clássicas procuram.</span></div>
+      <div class="fact"><b>~1,5/dia</b><span>quedas isoladas por dia entre ~720 ONUs. Com 5 falsos por dia, a precisão já fica abaixo de 20%.</span></div>
+    </div>
+  </article>
+
+  <article class="result highlight">
+    <header><span class="rnum">5.5</span><h3>Nova pergunta: quais ONUs devem cair na próxima semana?</h3></header>
+    <p class="prose">Em vez de um alarme por hora, uma <b>lista curta</b> para o técnico, feita só com os 7 dias anteriores.
+      Cada técnica vira uma pontuação por ONU. "× acaso" compara a precisão da lista com a de uma lista sorteada
+      (1,4% das ONUs caíram na semana de teste).</p>
+    <div class="toggle seg" role="tablist" aria-label="Tamanho da lista">
+      <button role="tab" aria-selected="true" data-k="10">lista de 10</button>
+      <button role="tab" aria-selected="false" data-k="20">lista de 20</button>
+    </div>
+    <div class="chart" id="bars"></div>
+    <p class="note">Melhor resultado: <b>3 das 13 ONUs que caíram estavam entre as 10 da lista</b> (precisão de 30%,
+      22 vezes o acaso), tanto na combinação de sinais sem treino quanto na regressão logística. Com 13 quedas, a
+      diferença entre as técnicas do topo ainda está dentro do ruído: o arquivo do sinal está acumulando novas semanas.</p>
+  </article>
+
+  <article class="result">
+    <header><span class="rnum">5.6</span><h3>Modelos de linguagem como filtro e explicação</h3></header>
+    <div class="cols">
+      <div class="prose">
+        <p>Cada alerta do Isolation Forest (03/nov) foi enviado ao modelo só com o que se sabia naquela hora, sem dado de
+          cliente. Ele respondeu "acionar" ou "não acionar" e explicou o tipo de problema.</p>
+        <p>Com o <b>Gemini 3.5 Flash Lite</b>: dos 48 alertas, 11 eram reais. Acionou 23 (30% reais contra 23% sem filtro),
+          cortou <b>57% dos falsos</b> e manteve <b>7 das 11</b> quedas. O Gemini 3.8 Flash ficou indisponível (sobrecarga).</p>
+      </div>
+      <div class="llm">
+        <div class="llm-row"><span>sem filtro</span><div class="llm-bar"><i style="--w:23%"></i></div><b>23%</b></div>
+        <div class="llm-row"><span>com Gemini</span><div class="llm-bar"><i style="--w:30%"></i></div><b>30%</b></div>
+        <p class="llm-cap">precisão dos alertas (fração seguida de queda)</p>
+      </div>
+    </div>
+  </article>
+</section>
+
+<section id="proximos">
+  <div class="sec-head"><span class="num">06</span><h2>Próximos passos</h2></div>
+  <ul class="next">
+    <li><b>Mais semanas de dados.</b> O sistema agora guarda o sinal hora a hora sem prazo. Cada semana nova vira mais uma
+      lista avaliada, até a diferença entre técnicas sair do ruído.</li>
+    <li><b>Validação em campo.</b> Um "falso" pode ser um problema real que ainda não derrubou o cliente. A lista semanal
+      vai para o técnico conferir.</li>
+    <li><b>Outros modelos de linguagem.</b> Claude, GPT, DeepSeek e Llama como filtro da lista, comparados ao Gemini com
+      as mesmas perguntas.</li>
+    <li><b>Perguntar a vários modelos por técnica.</b> A tabela de diagnóstico vai a vários modelos, com a pergunta "por
+      que esta técnica erra e como reduzir os falsos?", e as sugestões entram no experimento.</li>
+  </ul>
+  <div class="limits">
+    <h3>Limitações</h3>
+    <p>Poucas quedas (54, sendo 16 no teste); um buraco de 03/11 a 09/11, apagado pelo Zabbix antes de o arquivo existir;
+      resolução de 1 hora; um único provedor.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <p><b>Matheus Mayer</b> · Inteligência Artificial Aplicada (LIAA) · UNIPAMPA · 2026/2</p>
+  <p class="muted">Nenhum dado de cliente aparece neste site: ONUs identificadas só por código. Atualizado em 17/11/2026.</p>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
