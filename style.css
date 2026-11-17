@@ -275,3 +275,5 @@ footer p { margin: 4px 0; }
 .audit p { font-size: 14px; color: var(--ink-2); margin: 0 0 12px; }
 .audit p:last-child { margin-bottom: 0; }
 @media (max-width: 920px) { .ia-cols { grid-template-columns: 1fr; } }
+.video-wrap { border: 1px solid var(--line-2); border-radius: 6px; overflow: hidden; background: #0a0d11; box-shadow: 0 30px 80px -30px rgba(0,0,0,.8); }
+.video-wrap video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #0a0d11; }
